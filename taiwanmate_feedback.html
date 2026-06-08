@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Góp ý TaiwanMate AI</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #F5F6FA; min-height: 100vh; padding: 20px 16px 40px; }
+.wrap { max-width: 480px; margin: 0 auto; }
+.header { text-align: center; padding: 24px 0 20px; }
+.header h1 { font-size: 22px; font-weight: 800; color: #1A1D2E; margin-bottom: 6px; }
+.header p { font-size: 13px; color: #8A8FA3; line-height: 1.6; }
+.card { background: white; border-radius: 16px; padding: 18px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.label { font-size: 14px; font-weight: 700; color: #1A1D2E; margin-bottom: 10px; display: block; }
+.sublabel { font-size: 12px; color: #8A8FA3; margin-bottom: 10px; display: block; margin-top: -6px; }
+.stars { display: flex; gap: 8px; justify-content: center; margin: 8px 0; }
+.star { font-size: 36px; cursor: pointer; opacity: 0.25; transition: all 0.15s; user-select: none; }
+.star.on { opacity: 1; }
+.star-label { text-align: center; font-size: 13px; color: #8A8FA3; margin-top: 4px; height: 18px; }
+.opts { display: flex; flex-wrap: wrap; gap: 8px; }
+.opt { padding: 7px 14px; border-radius: 20px; border: 1.5px solid #E5E7EB; font-size: 12px; font-weight: 600; cursor: pointer; background: white; color: #8A8FA3; transition: all 0.15s; }
+.opt.sel { background: #FFF0EC; color: #FF6B35; border-color: #FF6B35; }
+textarea, input[type=email] { width: 100%; border: 1.5px solid #E5E7EB; border-radius: 12px; padding: 12px 14px; font-size: 14px; color: #1A1D2E; background: white; font-family: inherit; resize: vertical; }
+textarea { min-height: 80px; }
+textarea:focus, input[type=email]:focus { outline: none; border-color: #FF6B35; }
+.progress-wrap { background: #F5F6FA; border-radius: 20px; height: 6px; margin-bottom: 20px; }
+.progress-bar { height: 6px; background: linear-gradient(90deg, #FF6B35, #FFB300); border-radius: 20px; transition: width 0.3s; width: 0%; }
+.submit-btn { width: 100%; padding: 16px; border-radius: 14px; border: none; background: linear-gradient(135deg, #FF6B35, #FFB300); color: white; font-size: 16px; font-weight: 800; cursor: pointer; margin-top: 8px; }
+.submit-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.app-link { background: linear-gradient(135deg, #1A1D2E, #2D3250); border-radius: 16px; padding: 16px 18px; margin-bottom: 12px; display: flex; align-items: center; gap: 14px; text-decoration: none; }
+.app-link .icon { width: 48px; height: 48px; background: linear-gradient(135deg, #FF6B35, #FFB300); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
+.app-link .info { flex: 1; }
+.app-link .info p { font-size: 15px; font-weight: 800; color: white; margin-bottom: 2px; }
+.app-link .info span { font-size: 12px; color: rgba(255,255,255,0.6); }
+.app-link .arrow { color: rgba(255,255,255,0.5); font-size: 18px; }
+.success { text-align: center; padding: 40px 20px; display: none; }
+.success .icon { font-size: 64px; margin-bottom: 16px; }
+.success h2 { font-size: 22px; font-weight: 800; color: #1A1D2E; margin-bottom: 8px; }
+.success p { font-size: 14px; color: #8A8FA3; line-height: 1.6; }
+.device-opts { display: flex; gap: 8px; }
+.device-opts .opt { flex: 1; text-align: center; padding: 10px 8px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header">
+    <h1>🇹🇼 TaiwanMate AI</h1>
+    <p>Cảm ơn bạn đã test thử app!<br>Góp ý của bạn giúp app tốt hơn mỗi ngày 🙏</p>
+  </div>
+
+  <a class="app-link" href="https://taiwanmate-ai.github.io/taiwanmate-app/" target="_blank">
+    <div class="icon">📱</div>
+    <div class="info">
+      <p>Mở TaiwanMate AI</p>
+      <span>taiwanmate-ai.github.io/taiwanmate-app</span>
+    </div>
+    <span class="arrow">↗</span>
+  </a>
+
+  <div class="progress-wrap"><div class="progress-bar" id="prog"></div></div>
+
+  <div id="form-content">
+    <div class="card">
+      <span class="label">Bạn cho TaiwanMate AI mấy sao? ⭐</span>
+      <div class="stars">
+        <span class="star" onclick="setStar(1)">★</span>
+        <span class="star" onclick="setStar(2)">★</span>
+        <span class="star" onclick="setStar(3)">★</span>
+        <span class="star" onclick="setStar(4)">★</span>
+        <span class="star" onclick="setStar(5)">★</span>
+      </div>
+      <div class="star-label" id="star-label"></div>
+    </div>
+
+    <div class="card">
+      <span class="label">Bạn dùng thiết bị gì?</span>
+      <div class="device-opts opts" id="device">
+        <div class="opt" onclick="single(this,'device')">📱 Android</div>
+        <div class="opt" onclick="single(this,'device')">🍎 iPhone</div>
+        <div class="opt" onclick="single(this,'device')">💻 Máy tính</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="label">Tính năng bạn thích nhất?</span>
+      <span class="sublabel">Chọn tối đa 3</span>
+      <div class="opts" id="like">
+        <div class="opt" onclick="multi(this,'like',3)">🃏 Flashcard</div>
+        <div class="opt" onclick="multi(this,'like',3)">⚡ Quiz</div>
+        <div class="opt" onclick="multi(this,'like',3)">🎧 Nghe & chọn</div>
+        <div class="opt" onclick="multi(this,'like',3)">✍️ Điền từ</div>
+        <div class="opt" onclick="multi(this,'like',3)">🤖 Chat AI</div>
+        <div class="opt" onclick="multi(this,'like',3)">📷 Dịch ảnh</div>
+        <div class="opt" onclick="multi(this,'like',3)">🛠️ Công cụ tiếng Trung</div>
+        <div class="opt" onclick="multi(this,'like',3)">🆘 Câu khẩn cấp</div>
+        <div class="opt" onclick="multi(this,'like',3)">💼 Tìm việc</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="label">Tính năng nào bị lỗi hoặc khó dùng?</span>
+      <div class="opts" id="bug">
+        <div class="opt" onclick="multi(this,'bug',9)">🔊 Phát âm TTS</div>
+        <div class="opt" onclick="multi(this,'bug',9)">🔐 Đăng nhập</div>
+        <div class="opt" onclick="multi(this,'bug',9)">🃏 Flashcard</div>
+        <div class="opt" onclick="multi(this,'bug',9)">⚡ Quiz</div>
+        <div class="opt" onclick="multi(this,'bug',9)">🤖 Chat AI</div>
+        <div class="opt" onclick="multi(this,'bug',9)">📷 Dịch ảnh</div>
+        <div class="opt" onclick="multi(this,'bug',9)">🎤 Mic ghi âm</div>
+        <div class="opt" onclick="multi(this,'bug',9)">🖼️ Ảnh đại diện</div>
+        <div class="opt" onclick="multi(this,'bug',9)">✅ Không có lỗi</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="label">Bạn muốn thêm tính năng gì?</span>
+      <div class="opts" id="want">
+        <div class="opt" onclick="multi(this,'want',9)">🎭 Roleplay tình huống</div>
+        <div class="opt" onclick="multi(this,'want',9)">🏭 Từ vựng nhà máy/xây dựng</div>
+        <div class="opt" onclick="multi(this,'want',9)">🏆 Thách đấu bạn bè</div>
+        <div class="opt" onclick="multi(this,'want',9)">📰 Học qua tin tức</div>
+        <div class="opt" onclick="multi(this,'want',9)">🇯🇵 Tiếng Nhật/Hàn</div>
+        <div class="opt" onclick="multi(this,'want',9)">📞 Dịch realtime gọi điện</div>
+        <div class="opt" onclick="multi(this,'want',9)">👥 Học nhóm với bạn bè</div>
+        <div class="opt" onclick="multi(this,'want',9)">🗺️ Bản đồ Đài Loan</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="label">Góp ý thêm (không bắt buộc)</span>
+      <textarea id="comment" placeholder="App còn thiếu gì? Bạn muốn cải thiện điều gì?..." oninput="updateProgress()"></textarea>
+    </div>
+
+    <div class="card">
+      <span class="label">Email để nhận thông báo khi lên store</span>
+      <span class="sublabel">Không bắt buộc</span>
+      <input type="email" id="email" placeholder="email@gmail.com" oninput="updateProgress()">
+    </div>
+
+    <button class="submit-btn" id="submit-btn" onclick="submit()">Gửi feedback 🙏</button>
+  </div>
+
+  <div class="success" id="success">
+    <div class="icon">🎉</div>
+    <h2>Cảm ơn bạn rất nhiều!</h2>
+    <p>Feedback của bạn rất quý giá.<br>Mình sẽ cải thiện app dựa trên góp ý của bạn.<br><br>Khi app lên Play Store, bạn sẽ được thông báo sớm nhất! 🚀</p>
+  </div>
+</div>
+
+<script>
+let starVal = 0;
+const labels = ['','Rất tệ 😞','Tệ 😕','Bình thường 😐','Tốt 😊','Rất tốt! 🤩'];
+
+function setStar(v) {
+  starVal = v;
+  document.querySelectorAll('.star').forEach((s,i) => s.classList.toggle('on', i < v));
+  document.getElementById('star-label').textContent = labels[v];
+  updateProgress();
+}
+
+function single(el, id) {
+  document.querySelectorAll('#'+id+' .opt').forEach(o => o.classList.remove('sel'));
+  el.classList.add('sel');
+  updateProgress();
+}
+
+function multi(el, id, max) {
+  if (el.classList.contains('sel')) { el.classList.remove('sel'); updateProgress(); return; }
+  const sel = document.querySelectorAll('#'+id+' .sel').length;
+  if (sel < max) { el.classList.add('sel'); updateProgress(); }
+}
+
+function updateProgress() {
+  let s = 0;
+  if (starVal > 0) s += 30;
+  if (document.querySelectorAll('#device .sel').length) s += 10;
+  if (document.querySelectorAll('#like .sel').length) s += 25;
+  if (document.querySelectorAll('#bug .sel').length) s += 15;
+  if (document.getElementById('comment').value.trim()) s += 10;
+  if (document.getElementById('email').value.trim()) s += 10;
+  document.getElementById('prog').style.width = s + '%';
+}
+
+function submit() {
+  if (!starVal) { alert('Bạn chưa chọn số sao!'); return; }
+  const data = {
+    star: starVal,
+    device: [...document.querySelectorAll('#device .sel')].map(e=>e.textContent.trim()),
+    like: [...document.querySelectorAll('#like .sel')].map(e=>e.textContent.trim()),
+    bug: [...document.querySelectorAll('#bug .sel')].map(e=>e.textContent.trim()),
+    want: [...document.querySelectorAll('#want .sel')].map(e=>e.textContent.trim()),
+    comment: document.getElementById('comment').value.trim(),
+    email: document.getElementById('email').value.trim(),
+    time: new Date().toLocaleString('vi-VN'),
+  };
+  console.log('Feedback:', JSON.stringify(data, null, 2));
+  document.getElementById('form-content').style.display = 'none';
+  document.getElementById('success').style.display = 'block';
+  document.getElementById('prog').style.width = '100%';
+}
+</script>
+</body>
+</html>
